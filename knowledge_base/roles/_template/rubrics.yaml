@@ -1,0 +1,15 @@
+version: 1
+rubric_profile: <rubric_profile_id>
+industry_id: <industry_id>
+job_family_id: <job_family_id>
+role_id: <role_id>
+dimensions:
+  - id: <dimension_id>
+    name: <dimension_name>
+    competency_ids:
+      - <stable_competency_id>
+    score_anchors:
+      - { score: 1, description: <observable_low_score_evidence> }
+      - { score: 3, description: <meets_entry_level_evidence> }
+      - { score: 5, description: <strong_entry_level_evidence> }
+    source_ids: []

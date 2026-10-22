@@ -1,0 +1,12 @@
+version: 1
+industry_id: <industry_id>
+job_family_id: <job_family_id>
+role_id: <role_id>
+competencies:
+  - id: <stable_competency_id>
+    name: <competency_name>
+    description: <observable_skill_or_knowledge>
+    expected_level: intern_fresher
+    evidence_cues:
+      - <observable_example_or_signal>
+    source_ids: []

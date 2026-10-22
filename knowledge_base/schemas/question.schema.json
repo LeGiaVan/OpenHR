@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Interview question record",
+  "type": "object",
+  "required": ["version", "industry_id", "job_family_id", "role_id", "questions"],
+  "properties": {
+    "version": { "type": "integer", "minimum": 1 },
+    "industry_id": { "type": "string", "minLength": 1 },
+    "job_family_id": { "type": "string", "minLength": 1 },
+    "role_id": { "type": "string", "minLength": 1 },
+    "questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "difficulty", "competency_ids", "intent", "prompt"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "type": { "enum": ["behavioral", "role_specific"] },
+          "difficulty": { "enum": ["low", "medium", "high"] },
+          "competency_ids": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "intent": { "type": "string", "minLength": 1 },
+          "prompt": {
+            "type": "object",
+            "properties": { "vi": { "type": "string" }, "en": { "type": "string" } },
+            "minProperties": 1,
+            "additionalProperties": false
+          },
+          "follow_up_intents": { "type": "array", "items": { "type": "string" } },
+          "source_ids": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

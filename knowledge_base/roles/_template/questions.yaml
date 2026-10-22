@@ -1,0 +1,17 @@
+version: 1
+industry_id: <industry_id>
+job_family_id: <job_family_id>
+role_id: <role_id>
+questions:
+  - id: <stable_question_id>
+    type: behavioral # behavioral | role_specific
+    difficulty: low # low | medium | high
+    competency_ids:
+      - <stable_competency_id>
+    intent: <what_this_question_should_reveal>
+    prompt:
+      vi: <vietnamese_question_template>
+      en: <english_question_template>
+    follow_up_intents:
+      - <clarification_or_probe_intent>
+    source_ids: []

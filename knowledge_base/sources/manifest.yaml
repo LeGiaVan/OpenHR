@@ -1,0 +1,5 @@
+version: 1
+sources: []
+
+# Suggested fields: id, title, source_type, owner, version, reviewed_by,
+# reviewed_at, status, and license_or_usage_notes.

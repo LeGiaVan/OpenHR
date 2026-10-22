@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Interview rubric record",
+  "type": "object",
+  "required": ["version", "rubric_profile", "industry_id", "job_family_id", "role_id", "dimensions"],
+  "properties": {
+    "version": { "type": "integer", "minimum": 1 },
+    "rubric_profile": { "type": "string", "minLength": 1 },
+    "industry_id": { "type": "string", "minLength": 1 },
+    "job_family_id": { "type": "string", "minLength": 1 },
+    "role_id": { "type": "string", "minLength": 1 },
+    "dimensions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "competency_ids", "score_anchors"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "name": { "type": "string", "minLength": 1 },
+          "competency_ids": { "type": "array", "items": { "type": "string" } },
+          "score_anchors": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+              "type": "object",
+              "required": ["score", "description"],
+              "properties": {
+                "score": { "type": "integer", "minimum": 1, "maximum": 5 },
+                "description": { "type": "string", "minLength": 1 }
+              },
+              "additionalProperties": false
+            }
+          },
+          "source_ids": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

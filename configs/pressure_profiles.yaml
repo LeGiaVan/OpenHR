@@ -1,0 +1,28 @@
+# The workflow maps each question's difficulty band to configurable time limits.
+version: 1
+default_profile: standard
+profiles:
+  standard:
+    description: Mức áp lực vừa phải, đủ thời gian cho câu trả lời hoàn chỉnh.
+    difficulty_bands:
+      low: { preparation_seconds: 15, answer_seconds: 75 }
+      medium: { preparation_seconds: 30, answer_seconds: 120 }
+      high: { preparation_seconds: 45, answer_seconds: 180 }
+    max_followups_per_question: 2
+    timing_workflow:
+      classify_question_difficulty: true
+      consider_interview_level: true
+      consider_question_type: true
+      clamp_to_configured_band: true
+  strict:
+    description: Mức áp lực cao hơn cho người muốn luyện tập thử thách.
+    difficulty_bands:
+      low: { preparation_seconds: 10, answer_seconds: 60 }
+      medium: { preparation_seconds: 20, answer_seconds: 90 }
+      high: { preparation_seconds: 30, answer_seconds: 135 }
+    max_followups_per_question: 2
+    timing_workflow:
+      classify_question_difficulty: true
+      consider_interview_level: true
+      consider_question_type: true
+      clamp_to_configured_band: true

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Interview competency record",
+  "type": "object",
+  "required": ["version", "industry_id", "job_family_id", "role_id", "competencies"],
+  "properties": {
+    "version": { "type": "integer", "minimum": 1 },
+    "industry_id": { "type": "string", "minLength": 1 },
+    "job_family_id": { "type": "string", "minLength": 1 },
+    "role_id": { "type": "string", "minLength": 1 },
+    "competencies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "description", "expected_level", "evidence_cues"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "name": { "type": "string", "minLength": 1 },
+          "description": { "type": "string", "minLength": 1 },
+          "expected_level": { "type": "string" },
+          "evidence_cues": { "type": "array", "items": { "type": "string" } },
+          "source_ids": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

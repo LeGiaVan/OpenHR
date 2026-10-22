@@ -1,0 +1,4 @@
+version: 1
+job_families: []
+
+# Each family should reference an industry ID defined in industries.yaml.

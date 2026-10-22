@@ -1,0 +1,22 @@
+# Initial profiles. Edit here; do not encode these values in prompts or UI logic.
+version: 1
+default_level: level_2
+levels:
+  - id: level_1
+    name: Nền tảng
+    difficulty: beginner
+    question_mix: { behavioral: 0.8, role_specific: 0.2 }
+    follow_up: { enabled: true, strategy: clarify_then_probe, max_depth: 1 }
+    rubric_profile: entry_level
+  - id: level_2
+    name: Cân bằng
+    difficulty: intermediate
+    question_mix: { behavioral: 0.5, role_specific: 0.5 }
+    follow_up: { enabled: true, strategy: clarify_then_probe, max_depth: 2 }
+    rubric_profile: entry_level
+  - id: level_3
+    name: Chuyên sâu
+    difficulty: advanced
+    question_mix: { behavioral: 0.2, role_specific: 0.8 }
+    follow_up: { enabled: true, strategy: probe_assumptions_and_tradeoffs, max_depth: 3 }
+    rubric_profile: role_specific
