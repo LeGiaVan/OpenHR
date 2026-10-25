@@ -21,7 +21,7 @@ Nhóm này có thể chưa có kinh nghiệm phỏng vấn, chưa biết cách c
 
 ## 3. Trải nghiệm chính
 
-1. Người dùng tải CV và JD lên. Hai tài liệu này là context bắt buộc cho phiên để câu hỏi gắn với hồ sơ và vị trí ứng tuyển.
+1. Người dùng tải CV và JD lên dưới dạng PDF hoặc DOCX có text. Hai tài liệu này là context bắt buộc cho phiên để câu hỏi gắn với hồ sơ và vị trí ứng tuyển; POC chưa xử lý tài liệu scan bằng OCR.
 2. Người dùng chọn ngôn ngữ phỏng vấn: tiếng Việt hoặc tiếng Anh.
 3. Người dùng chọn cấp độ phỏng vấn. Cấp độ quyết định độ khó, tỷ lệ câu hỏi behavioral/chuyên môn và cách hỏi follow-up.
 4. Hệ thống trích xuất kỹ năng, kinh nghiệm và yêu cầu trong JD; truy xuất tiêu chí liên quan từ kho kiến thức.
@@ -102,6 +102,8 @@ Không hiển thị điểm hay hướng dẫn trong lúc mô phỏng. Sau khi k
 
 Mỗi điểm số cần đi cùng dẫn chứng cụ thể từ transcript, nhận xét điểm mạnh, khoảng trống và gợi ý luyện tập tiếp theo. Có thể đưa một phiên bản trả lời mẫu để tham khảo, nhưng cần dựa trên trải nghiệm thật trong CV và câu trả lời của người dùng, không tự bịa thành tích.
 
+Thang điểm và trọng số chưa được chốt; chúng cần được định nghĩa trong rubric theo cấu hình, không gắn cứng trong ứng dụng.
+
 Thống kê từ đệm, tốc độ nói và khoảng ngắt nghỉ là chỉ số phụ để tham khảo, không thay thế đánh giá nội dung. Rubric phải được truy xuất theo ngành, vị trí và cấp độ; không dùng một tiêu chuẩn chuyên môn chung cho mọi ngành.
 
 ## 8. Khung kho tiêu chí đa ngành
@@ -161,6 +163,7 @@ LangGraph được dùng để điều phối workflow rõ ràng và có thể k
 
 - Web app chạy được trên trình duyệt.
 - Tải CV và JD để cá nhân hóa phiên.
+- Nhận CV/JD dạng PDF hoặc DOCX có text; chưa hỗ trợ OCR tài liệu scan.
 - Chọn tiếng Việt hoặc tiếng Anh.
 - Chọn một trong các cấp độ phỏng vấn từ cấu hình.
 - Buổi phỏng vấn giọng nói có câu hỏi theo CV/JD và follow-up thích ứng.

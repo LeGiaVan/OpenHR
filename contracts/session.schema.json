@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Interview session contract",
+  "type": "object",
+  "required": ["contract_version", "session_id", "status", "language", "level_id", "pressure_profile_id", "documents", "created_at"],
+  "properties": {
+    "contract_version": { "const": 1 },
+    "session_id": { "type": "string", "format": "uuid" },
+    "status": { "enum": ["preparing", "ready", "running", "completed", "failed", "cancelled"] },
+    "language": { "enum": ["vi", "en"] },
+    "level_id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+    "pressure_profile_id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+    "documents": {
+      "type": "object",
+      "required": ["cv_document_id", "jd_document_id"],
+      "properties": {
+        "cv_document_id": { "type": "string", "format": "uuid" },
+        "jd_document_id": { "type": "string", "format": "uuid" }
+      },
+      "additionalProperties": false
+    },
+    "role_mapping": {
+      "type": ["object", "null"],
+      "properties": {
+        "industry_id": { "type": ["string", "null"] },
+        "job_family_id": { "type": ["string", "null"] },
+        "role_id": { "type": ["string", "null"] },
+        "confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1 }
+      },
+      "additionalProperties": false
+    },
+    "turn_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } },
+    "created_at": { "type": "string", "format": "date-time" },
+    "started_at": { "type": ["string", "null"], "format": "date-time" },
+    "ended_at": { "type": ["string", "null"], "format": "date-time" }
+  },
+  "additionalProperties": false
+}

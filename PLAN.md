@@ -1,6 +1,6 @@
 # Kế hoạch triển khai chi tiết
 
-Roadmap này chuyển proposal thành các giai đoạn POC có đầu ra và điều kiện hoàn tất. Provider, định dạng CV/JD, database, retention và thị trường chưa được quyết định.
+Roadmap này chuyển proposal thành các giai đoạn POC có đầu ra và điều kiện hoàn tất. PDF/DOCX dạng text đã được chọn cho CV/JD; provider, giới hạn upload, database, retention và thị trường vẫn mở.
 
 ## 1. Mục tiêu và nguyên tắc đã chốt
 
@@ -24,7 +24,7 @@ Live web search, agent tự chủ không giới hạn, accounts/payments, lịch
 
 Chốt đúng giai đoạn và ghi vào bảng cuối, không tự khóa trong code:
 
-1. Định dạng tài liệu, giới hạn file, OCR và cách sửa text.
+1. Giới hạn file/MIME cụ thể, parser package và UX sửa text; OCR scan không thuộc POC.
 2. LLM/STT/TTS provider theo chất lượng VI/EN, latency, chi phí, quotas.
 3. Session persistence, database, resume và retention transcript/audio.
 4. Retrieval: metadata/keyword trước; tiêu chí cần để thêm vector store.
@@ -37,13 +37,19 @@ Chốt đúng giai đoạn và ghi vào bảng cuối, không tự khóa trong c
 
 ### Phase 0 — Hợp đồng sản phẩm và dữ liệu
 
+**Trạng thái: Hoàn tất.** Hợp đồng payload, quy ước ID/version, schema cấu hình và boundary services được phác thảo trong contracts/ và configs/schemas/. Định dạng POC đã chốt là PDF/DOCX dạng text, không OCR scan. Provider cụ thể là gate trước vendor integration; skeleton/workflow có thể dùng mock cho đến khi lựa chọn đó được chốt.
+
 **Việc:** đọc Proposal.MD, AGENTS.md, configs, knowledge_base; định nghĩa/version model cho level, pressure profile, question, competency, rubric, session, report; thống nhất ID/reference; xác định validate lỗi config; chốt file/provider trước integration; vẽ boundary UI/API/graph/adapters.
 
-**Đầu ra:** data contracts, schema/config conventions, bảng quyết định cập nhật.
+**Đầu ra:** contracts/README.md, session/turn/report schemas, schema cho level/pressure config, quy ước ID/reference, semantic validation rules, ranh giới API/workflow/adapters và bảng quyết định cập nhật.
 
-**Hoàn tất:** UI/API/workflow dùng cùng field/ID; lỗi cấu hình bị phát hiện trước khi mở phiên; business rules không ẩn trong prompts.
+**Hoàn tất Phase 0:** UI/API/workflow có contract và ID conventions thống nhất; semantic validation/error behavior được đặc tả; business rules được tách khỏi prompt. Việc hiện thực validator chạy lúc backend startup thuộc Phase 1. Định dạng CV/JD đã chốt; vendor cụ thể là gate trước vendor integration.
+
+**Provider gate:** giữ LLM/STT/TTS provider-neutral, chạy mock trong skeleton/workflow; chọn vendor trước khi tích hợp dựa trên chất lượng VI/EN, latency và chi phí.
 
 ### Phase 1 — App skeleton và config
+
+**Trạng thái:** Skeleton frontend/backend, config loader/validation, API contract routes, mock adapters và in-memory session lifecycle đã được tạo. Chưa chạy runtime/build check; upload/parser, interview turns và report vẫn là placeholder thuộc các phase sau.
 
 **Việc:** tạo React/Vite và FastAPI; API contracts cho upload/setup/turn/end/report; backend đọc level và pressure YAML; frontend nhận config từ API; validate mix/bands/limits/references; tạo adapter interfaces cho LLM/STT/TTS/retrieval; secrets an toàn; UI skeleton upload/setup/interview/report.
 
@@ -140,7 +146,8 @@ Transcript/CV/JD là nguồn gốc; LLM summary không thay thế chúng.
 | Workflow | Đã chọn hướng | LangGraph có state và giới hạn |
 | Level/timing | Đã chốt nguyên tắc | User chọn; timer theo câu/config |
 | Retrieval | Đã chốt hướng đầu | Kho có provenance; chưa web search |
-| LLM/STT/TTS | Chưa chốt | So sánh VI/EN, latency, cost |
-| CV/JD format | Chưa chốt | Trước khi làm parser |
+| Contract và ID conventions | Đã phác thảo | Xem contracts/README.md và JSON Schemas |
+| LLM/STT/TTS | Chưa chốt | Dùng adapters/mock; chọn trước vendor integration |
+| CV/JD format | Đã chốt | PDF + DOCX text-based; không OCR scan |
 | Database/persistence | Chưa chốt | Trước history/resume |
 | Region/retention | Chưa chốt | Trước public release |

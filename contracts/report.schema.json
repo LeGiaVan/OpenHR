@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Post-interview report contract",
+  "type": "object",
+  "required": ["contract_version", "report_id", "session_id", "language", "rubric_version", "dimensions", "created_at"],
+  "properties": {
+    "contract_version": { "const": 1 },
+    "report_id": { "type": "string", "format": "uuid" },
+    "session_id": { "type": "string", "format": "uuid" },
+    "language": { "enum": ["vi", "en"] },
+    "rubric_version": { "type": "integer", "minimum": 1 },
+    "overall_summary": { "type": ["string", "null"] },
+    "dimensions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["dimension_id", "status", "score", "evidence", "feedback"],
+        "properties": {
+          "dimension_id": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["scored", "insufficient_evidence"] },
+          "score": {
+            "oneOf": [
+              { "type": "number" },
+              { "type": "string", "minLength": 1 },
+              { "type": "null" }
+            ]
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["turn_id", "excerpt"],
+              "properties": {
+                "turn_id": { "type": "string", "format": "uuid" },
+                "excerpt": { "type": "string" }
+              },
+              "additionalProperties": false
+            }
+          },
+          "feedback": { "type": "string" },
+          "strengths": { "type": "array", "items": { "type": "string" } },
+          "gaps": { "type": "array", "items": { "type": "string" } },
+          "next_steps": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": false
+      }
+    },
+    "language_notes": { "type": ["string", "null"] },
+    "speech_observations": { "type": "array", "items": { "type": "string" } },
+    "created_at": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

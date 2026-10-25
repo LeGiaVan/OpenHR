@@ -11,6 +11,7 @@ Xây web app luyện phỏng vấn bằng giọng nói cho sinh viên/người m
 ## Quyết định đã chốt
 
 - Cần cả CV và JD làm context cho phiên cá nhân hóa.
+- POC nhận PDF và DOCX dạng text; không triển khai OCR tài liệu scan.
 - Hỗ trợ tiếng Việt hoặc tiếng Anh, người dùng chọn theo từng phiên.
 - Hỗ trợ đa ngành bằng kho tiêu chí mở rộng, không gắn logic vào một ngành.
 - Hướng POC: React + Vite, Python FastAPI, LangGraph.
@@ -26,9 +27,10 @@ Xây web app luyện phỏng vấn bằng giọng nói cho sinh viên/người m
 
 - Đọc Proposal.MD cho mục tiêu và trải nghiệm.
 - Đọc PLAN.md cho phases, dependencies, acceptance và open decisions.
+- Đọc contracts/README.md cùng schema liên quan trước khi sửa session state, turn/report payload, API boundary hoặc config validation.
 - Đọc configs/interview_levels.yaml và configs/pressure_profiles.yaml trước khi sửa interview/timing.
 - Đọc knowledge_base/README.md, schemas và templates trước khi thêm dữ liệu.
-- Chưa tự quyết provider LLM/STT/TTS, file formats, database, retention, deployment region hay score weights.
+- Chưa tự quyết provider LLM/STT/TTS, giới hạn upload/parser package, database, retention, deployment region hay score weights.
 - Nếu công việc phụ thuộc quyết định chưa chốt, liệt kê option và hỏi trong một lần tổng hợp ngắn; không hỏi rải rác từng lượt.
 - Khi chốt một quyết định, cập nhật config/docs và bảng quyết định trong PLAN.md.
 
