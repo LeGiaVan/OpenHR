@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Interview pressure profile configuration",
+  "type": "object",
+  "required": ["version", "default_profile", "profiles"],
+  "properties": {
+    "version": { "type": "integer", "minimum": 1 },
+    "default_profile": { "type": "string", "minLength": 1 },
+    "profiles": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["description", "difficulty_bands", "max_followups_per_question", "timing_workflow"],
+        "properties": {
+          "description": { "type": "string" },
+          "difficulty_bands": {
+            "type": "object",
+            "required": ["low", "medium", "high"],
+            "properties": {
+              "low": { "$ref": "#/$defs/timeAllowance" },
+              "medium": { "$ref": "#/$defs/timeAllowance" },
+              "high": { "$ref": "#/$defs/timeAllowance" }
+            },
+            "additionalProperties": false
+          },
+          "max_followups_per_question": { "type": "integer", "minimum": 0 },
+          "timing_workflow": {
+            "type": "object",
+            "required": ["classify_question_difficulty", "consider_interview_level", "consider_question_type", "clamp_to_configured_band"],
+            "properties": {
+              "classify_question_difficulty": { "type": "boolean" },
+              "consider_interview_level": { "type": "boolean" },
+              "consider_question_type": { "type": "boolean" },
+              "clamp_to_configured_band": { "type": "boolean" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "$defs": {
+    "timeAllowance": {
+      "type": "object",
+      "required": ["preparation_seconds", "answer_seconds"],
+      "properties": {
+        "preparation_seconds": { "type": "integer", "minimum": 0 },
+        "answer_seconds": { "type": "integer", "minimum": 1 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

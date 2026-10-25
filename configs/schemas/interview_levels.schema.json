@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Interview level configuration",
+  "type": "object",
+  "required": ["version", "default_level", "levels"],
+  "properties": {
+    "version": { "type": "integer", "minimum": 1 },
+    "default_level": { "type": "string", "minLength": 1 },
+    "levels": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "difficulty", "question_mix", "follow_up", "rubric_profile"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "name": { "type": "string", "minLength": 1 },
+          "difficulty": { "enum": ["beginner", "intermediate", "advanced"] },
+          "question_mix": {
+            "type": "object",
+            "required": ["behavioral", "role_specific"],
+            "properties": {
+              "behavioral": { "type": "number", "minimum": 0, "maximum": 1 },
+              "role_specific": { "type": "number", "minimum": 0, "maximum": 1 }
+            },
+            "additionalProperties": false
+          },
+          "follow_up": {
+            "type": "object",
+            "required": ["enabled", "strategy", "max_depth"],
+            "properties": {
+              "enabled": { "type": "boolean" },
+              "strategy": { "type": "string", "minLength": 1 },
+              "max_depth": { "type": "integer", "minimum": 0 }
+            },
+            "additionalProperties": false
+          },
+          "rubric_profile": { "type": "string", "minLength": 1 }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

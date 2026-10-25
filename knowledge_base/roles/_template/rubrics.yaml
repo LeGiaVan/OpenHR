@@ -9,7 +9,7 @@ dimensions:
     competency_ids:
       - <stable_competency_id>
     score_anchors:
-      - { score: 1, description: <observable_low_score_evidence> }
-      - { score: 3, description: <meets_entry_level_evidence> }
-      - { score: 5, description: <strong_entry_level_evidence> }
+      - { score: <configured_low_score>, description: <observable_low_score_evidence> }
+      - { score: <configured_middle_score>, description: <meets_entry_level_evidence> }
+      - { score: <configured_high_score>, description: <strong_entry_level_evidence> }
     source_ids: []

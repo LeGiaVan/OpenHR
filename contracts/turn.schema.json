@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Interview turn contract",
+  "type": "object",
+  "required": ["contract_version", "turn_id", "sequence", "kind", "status", "question"],
+  "properties": {
+    "contract_version": { "const": 1 },
+    "turn_id": { "type": "string", "format": "uuid" },
+    "sequence": { "type": "integer", "minimum": 1 },
+    "kind": { "enum": ["primary", "follow_up"] },
+    "status": { "enum": ["queued", "asking", "answering", "submitted", "timed_out", "skipped"] },
+    "question": {
+      "type": "object",
+      "required": ["text", "type", "difficulty", "competency_ids"],
+      "properties": {
+        "text": { "type": "string", "minLength": 1 },
+        "type": { "enum": ["behavioral", "role_specific"] },
+        "difficulty": { "enum": ["low", "medium", "high"] },
+        "competency_ids": { "type": "array", "items": { "type": "string" } },
+        "source_question_ids": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "answer": {
+      "type": ["object", "null"],
+      "properties": {
+        "transcript": { "type": "string" },
+        "language": { "enum": ["vi", "en"] },
+        "submitted_at": { "type": "string", "format": "date-time" },
+        "speech_confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1 }
+      },
+      "additionalProperties": false
+    },
+    "timing": {
+      "type": ["object", "null"],
+      "properties": {
+        "difficulty_band": { "enum": ["low", "medium", "high"] },
+        "preparation_seconds": { "type": "integer", "minimum": 0 },
+        "answer_seconds": { "type": "integer", "minimum": 1 },
+        "profile_id": { "type": "string" },
+        "decision_source": { "enum": ["configured_band", "workflow_adjusted"] }
+      },
+      "additionalProperties": false
+    },
+    "asked_at": { "type": ["string", "null"], "format": "date-time" },
+    "completed_at": { "type": ["string", "null"], "format": "date-time" }
+  },
+  "additionalProperties": false
+}
