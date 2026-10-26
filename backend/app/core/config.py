@@ -109,12 +109,26 @@ def _validate_pressure_profiles(config: dict[str, Any]) -> None:
         )
 
 
+def _validate_document_processing(config: dict[str, Any]) -> None:
+    extensions = [item["extension"] for item in config["accepted_formats"]]
+    kinds = [item["kind"] for item in config["accepted_formats"]]
+    if len(extensions) != len(set(extensions)) or len(kinds) != len(set(kinds)):
+        raise ConfigValidationError("Document processing formats must be unique")
+    if set(extensions) != {".pdf", ".docx"} or set(kinds) != {"pdf", "docx"}:
+        raise ConfigValidationError("Document processing must configure PDF and DOCX formats")
+    if config["max_docx_uncompressed_size_bytes"] < config["max_file_size_bytes"]:
+        raise ConfigValidationError(
+            "max_docx_uncompressed_size_bytes must be at least max_file_size_bytes"
+        )
+
+
 def load_runtime_config(project_root: Path) -> dict[str, Any]:
     """Load and validate config once during application startup."""
     config_dir = project_root / "configs"
     schema_dir = config_dir / "schemas"
     levels = _read_yaml(config_dir / "interview_levels.yaml")
     pressure = _read_yaml(config_dir / "pressure_profiles.yaml")
+    documents = _read_yaml(config_dir / "document_processing.yaml")
 
     _validate_schema(
         levels, schema_dir / "interview_levels.schema.json", "interview_levels.yaml"
@@ -126,4 +140,14 @@ def load_runtime_config(project_root: Path) -> dict[str, Any]:
     )
     _validate_levels(levels)
     _validate_pressure_profiles(pressure)
-    return {"interview_levels": levels, "pressure_profiles": pressure}
+    _validate_schema(
+        documents,
+        schema_dir / "document_processing.schema.json",
+        "document_processing.yaml",
+    )
+    _validate_document_processing(documents)
+    return {
+        "interview_levels": levels,
+        "pressure_profiles": pressure,
+        "document_processing": documents,
+    }

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import os
 from contextlib import asynccontextmanager
 from uuid import uuid4
 
@@ -11,15 +12,19 @@ from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from .adapters.mock import (
-    EmptyCriteriaRetriever,
     MockLLMProvider,
     MockSpeechToTextProvider,
     MockTextToSpeechProvider,
 )
+from .adapters.gemini import build_gemini_providers
 from .api.routes import router
 from .core.config import ConfigValidationError, load_runtime_config
 from .core.session_store import InMemorySessionStore
 from .core.settings import get_api_prefix, get_config_dir_root, get_cors_origins
+from .documents.store import InMemoryDocumentStore
+from .retrieval.keyword import KnowledgeBaseRetriever
+from .retrieval.knowledge_base import KnowledgeBaseValidationError, load_knowledge_base
+from .workflow.service import InterviewWorkflow
 
 
 logger = logging.getLogger("openhr.api")
@@ -32,13 +37,43 @@ async def lifespan(app: FastAPI):
     except ConfigValidationError:
         logger.exception("Application configuration validation failed")
         raise
-    app.state.session_store = InMemorySessionStore()
-    app.state.providers = {
-        "llm": MockLLMProvider(),
-        "stt": MockSpeechToTextProvider(),
-        "tts": MockTextToSpeechProvider(),
-        "criteria_retriever": EmptyCriteriaRetriever(),
+    levels = {
+        level["id"]: level
+        for level in app.state.runtime_config["interview_levels"]["levels"]
     }
+    try:
+        app.state.knowledge_base = load_knowledge_base(
+            get_config_dir_root() / "knowledge_base",
+            level_ids=set(levels),
+            rubric_profiles={level["rubric_profile"] for level in levels.values()},
+        )
+    except KnowledgeBaseValidationError:
+        logger.exception("Knowledge-base validation failed")
+        raise
+    app.state.session_store = InMemorySessionStore()
+    app.state.document_store = InMemoryDocumentStore()
+    provider_mode = os.getenv("OPENHR_PROVIDER_MODE", "mock").strip().lower()
+    if provider_mode == "gemini":
+        speech_providers = build_gemini_providers()
+    elif provider_mode == "mock":
+        speech_providers = {
+            "llm": MockLLMProvider(),
+            "stt": MockSpeechToTextProvider(),
+            "tts": MockTextToSpeechProvider(),
+        }
+    else:
+        raise RuntimeError("OPENHR_PROVIDER_MODE must be 'mock' or 'gemini'")
+    app.state.providers = {
+        **speech_providers,
+        "criteria_retriever": KnowledgeBaseRetriever(
+            app.state.knowledge_base, levels=levels
+        ),
+    }
+    app.state.interview_workflow = InterviewWorkflow(
+        app.state.session_store,
+        app.state.runtime_config,
+        app.state.providers["criteria_retriever"],
+    )
     yield
 
 
@@ -46,8 +81,8 @@ app = FastAPI(
     title="OpenHR Interview Practice API",
     version="0.1.0",
     description=(
-        "Phase 1 API skeleton. Document parsing, live interview turns, and reports "
-        "are added in later phases."
+        "Text interview workflow with validated criteria retrieval. Evaluation reports "
+        "are added in Phase 6."
     ),
     lifespan=lifespan,
 )
@@ -56,7 +91,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=get_cors_origins(),
     allow_credentials=False,
-    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["Content-Type", "X-Request-ID"],
 )
 

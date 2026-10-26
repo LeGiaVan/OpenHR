@@ -26,9 +26,16 @@ class MockTextToSpeechProvider:
 
 class EmptyCriteriaRetriever:
     async def retrieve(
-        self, *, query: str, industry_id: str | None, role_id: str | None, level_id: str
+        self,
+        *,
+        query: str,
+        industry_id: str | None,
+        job_family_id: str | None,
+        role_id: str | None,
+        level_id: str,
+        limit: int = 10,
     ) -> list[RetrievedRecord]:
-        del query, industry_id, role_id, level_id
+        del query, industry_id, job_family_id, role_id, level_id, limit
         return []
 
 
@@ -37,5 +44,5 @@ def mock_provider_status() -> dict[str, Any]:
         "llm": "mock",
         "speech_to_text": "mock",
         "text_to_speech": "mock",
-        "criteria_retriever": "empty",
+        "criteria_retriever": "controlled_knowledge_base",
     }
